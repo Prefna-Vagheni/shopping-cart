@@ -1,25 +1,53 @@
-import logo from './logo.svg';
-import './App.css';
+const items = [
+  {
+    id: crypto.randomUUID(),
+    name: 'Shoe',
+    color: 'black',
+    price: 200,
+    image: 'https://i.pravatar.cc/48',
+  },
+  {
+    id: crypto.randomUUID(),
+    name: 'Iphone',
+    color: 'gold',
+    price: 900,
+    image: 'https://i.pravatar.cc/48',
+  },
+  {
+    id: crypto.randomUUID(),
+    name: 'Canon EOS 5D',
+    color: null,
+    price: 730,
+    image: 'https://i.pravatar.cc/48',
+  },
+];
 
-function App() {
+export default function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app">
+      <ItemsList />
     </div>
   );
 }
 
-export default App;
+function ItemsList() {
+  return (
+    <ul>
+      {items.map((item) => (
+        <li key={item.id}>
+          <img src={item.image} alt={item.name} />
+          <div>
+            <p className="blue">{item.name}</p>
+            <p>{item.color ?? ''}</p>
+          </div>
+          <p>{`${item.price}$`}</p>
+          <button className="button">Add To Cart</button>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+// function Item(){
+//   return items.map(item => )
+// }
