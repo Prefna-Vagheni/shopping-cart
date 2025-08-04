@@ -168,7 +168,7 @@ function AddToCart({ cart }) {
       </div>
       <p>{`$${item.price}`}</p>
       <div className="flex">
-        <input type="text" value={0} onChange={() => 4} disabled />
+        <input type="text" value={item.quantity} onChange={() => 4} disabled />
         <span>pcs</span>
       </div>
       <p>${item.price * item.quantity}</p>

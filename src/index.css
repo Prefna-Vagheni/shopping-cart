@@ -40,9 +40,9 @@ h2 {
   column-gap: 3rem;
 }
 ul {
-  list-style: none;
   display: flex;
   flex-direction: column;
+  list-style: none;
   background: var(--color-lightest);
   gap: 0.4rem;
   font-size: 1.4rem;
