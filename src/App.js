@@ -80,6 +80,10 @@ export default function App() {
     setQuantities('');
   }
 
+  function handleCheckoutCart() {
+    setCart([]);
+  }
+
   return (
     <div className="app">
       <ItemsList
@@ -88,7 +92,7 @@ export default function App() {
         setQuantities={setQuantities}
         onAddToCart={handleAddToCart}
       />
-      <ShoppingCart cart={cart} />
+      <ShoppingCart onCheckout={handleCheckoutCart} cart={cart} />
     </div>
   );
 }
@@ -126,7 +130,7 @@ function ItemsList({ quantities, setQuantities, onAddToCart, items }) {
   );
 }
 
-function ShoppingCart({ cart }) {
+function ShoppingCart({ cart, onCheckout }) {
   return (
     <div>
       <h2>Shopping Cart</h2>
@@ -147,13 +151,16 @@ function ShoppingCart({ cart }) {
           </ul>
         </>
       )}
-      <div className="flex-right">
-        <Button>Update</Button>
-        <Total cart={cart} />
-      </div>
+      {cart.length > 0 && (
+        <div className="flex-right">
+          <Button>Update</Button>
+          <Total cart={cart} />
+        </div>
+      )}
+
       <div className="buttons-flex">
         <Button>Continue Shopping</Button>
-        <Button>Checkout</Button>
+        <Button onClick={onCheckout}>Checkout</Button>
       </div>
     </div>
   );
