@@ -77,6 +77,7 @@ export default function App() {
     const quantity = quantities[item.id] || 1;
 
     setCart((prevItem) => [...prevItem, { ...item, quantity }]);
+    setQuantities('');
   }
 
   return (
