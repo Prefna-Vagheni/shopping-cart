@@ -4,6 +4,7 @@
   --color-medium: #ffa94d;
   --color-dark: #ff922b;
   --color-hover: #ece2d6;
+  --color-black: #495057;
 }
 
 * {
@@ -21,7 +22,7 @@ html {
   -moz-osx-font-smoothing: grayscale;
 }
 body {
-  color: #495057;
+  color: var(--color-black);
   height: 100vh;
 }
 h2 {
@@ -50,12 +51,30 @@ ul {
 }
 .cart-container {
   display: grid;
-  grid-template-columns: 4.8rem 2fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: 4.8rem 2fr 1fr 0.5fr 0.5fr 0.3fr;
   width: 100%;
 }
+.buttons-flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+input {
+  text-align: center;
+  max-width: 7rem;
+  color: inherit;
+  padding: 0.3rem;
+  border-radius: 5px;
+  border: 0.5px solid var(--color-black);
+}
+input:focus {
+  outline: none;
+  border: 0.5px solid var(--color-medium);
+}
+
 li {
   display: grid;
-  grid-template-columns: 4.8rem 2fr 0.5fr 1.5fr;
+  grid-template-columns: 4.8rem 2fr 0.5fr 0.5fr 1.5fr;
   align-items: center;
   column-gap: 1.6rem;
 
@@ -69,8 +88,25 @@ li:nth-child(even) {
 li:hover {
   background-color: var(--color-hover);
 }
+.flex {
+  display: flex;
+}
+.flex-right {
+  display: flex;
+  margin-left: auto;
+  justify-content: space-between;
+  align-items: center;
+  width: 50%;
+}
 .blue {
   color: blue;
+}
+.red {
+  color: red;
+}
+.orange {
+  background-color: rgb(235, 134, 98);
+  color: white;
 }
 .button {
   padding: 0.5rem;
