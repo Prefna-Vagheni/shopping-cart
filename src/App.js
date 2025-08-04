@@ -45,49 +45,56 @@ const items = [
   },
 ];
 
-const cart = [
-  {
-    id: crypto.randomUUID(),
-    name: 'Canon EOS 5D',
-    color: null,
-    price: 730,
-    image: 'https://i.pravatar.cc/48',
-  },
-  {
-    id: crypto.randomUUID(),
-    name: 'Canon EOS 5D',
-    color: 'Red',
-    price: 730,
-    image: 'https://i.pravatar.cc/48',
-  },
-];
+// const cart = [
+//   {
+//     id: crypto.randomUUID(),
+//     name: 'Canon EOS 5D',
+//     color: null,
+//     price: 730,
+//     image: 'https://i.pravatar.cc/48',
+//   },
+//   {
+//     id: crypto.randomUUID(),
+//     name: 'Canon EOS 5D',
+//     color: 'Red',
+//     price: 730,
+//     image: 'https://i.pravatar.cc/48',
+//   },
+// ];
 
 export default function App() {
+  const [quantities, setQuantities] = useState({});
+  const [cart, setCart] = useState([]);
+
+  // const itemToCart = {
+  //   name: '',
+  //   image: '',
+  //   color: null,
+  //   price: 0,
+  // };
+
+  function handleAddToCart(item) {
+    const quantity = quantities[item.id] || 1;
+
+    setCart((prevItem) => [...prevItem, { ...item, quantity }]);
+  }
+
   return (
     <div className="app">
-      <ItemsList />
-      <ShoppingCart />
+      <ItemsList
+        items={items}
+        quantities={quantities}
+        setQuantities={setQuantities}
+        onAddToCart={handleAddToCart}
+      />
+      <ShoppingCart cart={cart} />
     </div>
   );
 }
 
-function ItemsList() {
-  const [quantities, setQuantities] = useState({});
-  const [cart, setCart] = useState([]);
-
-  const itemToCart = {
-    name: '',
-    image: '',
-    color: null,
-    price: 0,
-  };
-
+function ItemsList({ quantities, setQuantities, onAddToCart, items }) {
   function handleQuantityChange(id, value) {
     setQuantities((item) => ({ ...item, [id]: value }));
-  }
-
-  function handleAddToCart() {
-    setCart([...cart, itemToCart]);
   }
 
   return (
@@ -110,7 +117,7 @@ function ItemsList() {
                 handleQuantityChange(item.id, Number(e.target.value))
               }
             />
-            <Button>Add Cart</Button>
+            <Button onClick={() => onAddToCart(item)}>Add Cart</Button>
           </li>
         ))}
       </ul>
@@ -118,7 +125,7 @@ function ItemsList() {
   );
 }
 
-function ShoppingCart() {
+function ShoppingCart({ cart }) {
   return (
     <div>
       <h2>Shopping Cart</h2>
@@ -130,27 +137,18 @@ function ShoppingCart() {
         <span>Total</span>
         <span>Delete</span>
       </p>
-      <ul>
-        {cart.map((item) => (
-          <li className="cart-container" key={item.id}>
-            <img src={item.image} alt={item.name} />
-            <div>
-              <h3 className="blue">{item.name}</h3>
-              <p>{item.color ?? ''}</p>
-            </div>
-            <p>{`$${item.price}`}</p>
-            <div className="flex">
-              <input type="text" value={0} onChange={() => 4} />
-              <span>pcs</span>
-            </div>
-            <p>$100</p>
-            <Button>X</Button>
-          </li>
-        ))}
-      </ul>
+      {cart.length === 0 ? (
+        <p>No items in the cart</p>
+      ) : (
+        <>
+          <ul>
+            <AddToCart cart={cart} />
+          </ul>
+        </>
+      )}
       <div className="flex-right">
         <Button>Update</Button>
-        <Total />
+        <Total cart={cart} />
       </div>
       <div className="buttons-flex">
         <Button>Continue Shopping</Button>
@@ -160,17 +158,43 @@ function ShoppingCart() {
   );
 }
 
-function Total() {
+function AddToCart({ cart }) {
+  return cart.map((item, i) => (
+    <li className="cart-container" key={i}>
+      <img src={item.image} alt={item.name} />
+      <div>
+        <h3 className="blue">{item.name}</h3>
+        <p>{item.color ?? ''}</p>
+      </div>
+      <p>{`$${item.price}`}</p>
+      <div className="flex">
+        <input type="text" value={0} onChange={() => 4} disabled />
+        <span>pcs</span>
+      </div>
+      <p>${item.price * item.quantity}</p>
+      <Button>X</Button>
+    </li>
+  ));
+}
+
+function Total({ cart }) {
+  const total = cart.reduce(
+    (sum, item) => sum + item.price * Number(item.quantity),
+    0
+  );
   return (
     <h3>
-      Total: <span className="red">$124.53</span>
+      Total: <span className="red">${total.toFixed(2)}</span>
     </h3>
   );
 }
 
-function Button({ children }) {
+function Button({ children, onClick }) {
   return (
-    <button className={children === 'Update' ? 'button orange' : 'button'}>
+    <button
+      onClick={onClick}
+      className={children === 'Update' ? 'button orange' : 'button'}
+    >
       {children}
     </button>
   );
